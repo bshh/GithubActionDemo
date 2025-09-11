@@ -40,12 +40,9 @@ jobs:
       - name: Get version info
         id: vars
         run: |
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/}
-          else
-            SHORT_SHA=$(git rev-parse --short HEAD)
-            VERSION="Unreleased-${SHORT_SHA}"
-          fi
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          DATE=$(date +'%Y-%m-%d')
+          VERSION="Unreleased-${DATE}-${SHORT_SHA}"
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build binary
@@ -117,19 +114,24 @@ jobs:
       - name: Delete old Unreleased draft (only on main push)
         if: github.ref == 'refs/heads/main'
         run: |
-          gh release list --json tagName,isDraft | jq -r '.[] | select(.isDraft==true and .tagName|test("^Unreleased")) | .tagName' | while read -r tag; do
+          gh release list --json tagName,isDraft | jq -r '.[] | select(.isDraft==true and .tagName=="Unreleased") | .tagName' | while read -r tag; do
             echo "Deleting old draft: $tag"
             gh release delete "$tag" --yes
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate release notes (Conventional Commits)
+      - name: Generate release notes (Conventional Commits + Downloads)
         run: |
+          VERSION=${{ needs.build.outputs.release_version }}
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          RANGE="$PREV_TAG..HEAD"
+          if [ -n "$PREV_TAG" ]; then
+            RANGE="$PREV_TAG..HEAD"
+          else
+            RANGE="HEAD"
+          fi
 
-          echo "# Release ${{ needs.build.outputs.release_version }}" > release_notes.md
+          echo "# Release $VERSION" > release_notes.md
           echo "" >> release_notes.md
 
           declare -A sections=(
@@ -166,7 +168,7 @@ jobs:
             for file in release/*; do
               if [[ "$file" == *"$os"* ]]; then
                 FILE_NAME=$(basename "$file")
-                echo "- [$FILE_NAME](https://github.com/${{ github.repository }}/releases/download/${{ needs.build.outputs.release_version }}/$FILE_NAME)" >> release_notes.md
+                echo "- [$FILE_NAME](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_type == 'tag' && github.ref_name || 'Unreleased' }}/$FILE_NAME)" >> release_notes.md
               fi
             done
             echo "" >> release_notes.md
@@ -197,7 +199,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || needs.build.outputs.release_version }}
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'Unreleased' }}
           name: ${{ github.ref_type == 'tag' && format('Release {0}', github.ref_name) || format('Unreleased Build ({0})', needs.build.outputs.release_version) }}
           files: release/*
           body_path: release_notes.md
