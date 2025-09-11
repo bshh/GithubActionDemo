@@ -1,0 +1,213 @@
+name: Go Build and Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, darwin, windows]
+        goarch: [amd64, arm64]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+
+      - name: Get version info
+        id: vars
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          else
+            SHORT_SHA=$(git rev-parse --short HEAD)
+            VERSION="Unreleased - ${SHORT_SHA}"
+          fi
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Build binary
+        run: |
+          PLATFORM_DIR="dist/${{ matrix.goos }}/${{ matrix.goarch }}"
+          mkdir -p "$PLATFORM_DIR"
+          BIN_NAME="app-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
+          OUT_NAME="$BIN_NAME"
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            OUT_NAME="$BIN_NAME.exe"
+          fi
+          CGO_ENABLED=0 GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o "$PLATFORM_DIR/$OUT_NAME" main.go
+
+      - name: Package artifacts
+        run: |
+          PLATFORM_DIR="dist/${{ matrix.goos }}/${{ matrix.goarch }}"
+          ZIP_TAR_NAME="app-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
+          BIN_NAME="$ZIP_TAR_NAME"
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            BIN_NAME="$ZIP_TAR_NAME.exe"
+          fi
+          cd "$PLATFORM_DIR"
+          zip -r "${ZIP_TAR_NAME}.zip" "$BIN_NAME"
+          tar -czf "${ZIP_TAR_NAME}.tar.gz" "$BIN_NAME"
+
+      - name: Upload matrix artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: dist/${{ matrix.goos }}/${{ matrix.goarch }}/*
+
+  collect:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all matrix artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Collect all release files
+        run: |
+          shopt -s globstar nullglob
+          mkdir -p release
+          cp dist/**/*.zip dist/**/*.tar.gz release/ || true
+
+      - name: Upload consolidated release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: release/*
+
+  release:
+    if: github.ref_type == 'tag' || github.ref == 'refs/heads/main'
+    needs: collect
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: release
+
+      - name: Delete old Unreleased draft (only on main push)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          gh release list --json tagName,isDraft | jq -r '.[] | select(.isDraft==true and .tagName|test("^Unreleased")) | .tagName' | while read -r tag; do
+            echo "Deleting old draft: $tag"
+            gh release delete "$tag" --yes
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate release notes (Conventional Commits)
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            IS_RELEASE=true
+          else
+            IS_RELEASE=false
+          fi
+
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          RANGE="$PREV_TAG..HEAD"
+
+          echo "# Release ${{ env.RELEASE_VERSION }}" > release_notes.md
+          echo "" >> release_notes.md
+
+          declare -A sections=(
+            ["feat"]="## ✨ Features"
+            ["fix"]="## 🐛 Bug Fixes"
+            ["docs"]="## 📖 Documentation"
+            ["refactor"]="## ♻️ Refactoring"
+            ["perf"]="## ⚡ Performance"
+            ["test"]="## ✅ Tests"
+            ["chore"]="## 🔧 Chores"
+          )
+
+          declare -A logs
+          while IFS= read -r line; do
+            for key in "${!sections[@]}"; do
+              if [[ "$line" == "$key:"* ]]; then
+                logs[$key]+="- ${line#*: }"$'\n'
+              fi
+            done
+          done < <(git log $RANGE --pretty=format:"%s")
+
+          for key in feat fix docs refactor perf test chore; do
+            if [ -n "${logs[$key]}" ]; then
+              echo "${sections[$key]}" >> release_notes.md
+              echo "" >> release_notes.md
+              echo "${logs[$key]}" >> release_notes.md
+              echo "" >> release_notes.md
+            fi
+          done
+
+          echo "## 📦 Downloads" >> release_notes.md
+          for os in linux darwin windows; do
+            echo "### ${os^}" >> release_notes.md
+            for file in release/*; do
+              if [[ "$file" == *"$os"* ]]; then
+                FILE_NAME=$(basename "$file")
+                echo "- [$FILE_NAME](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_VERSION }}/$FILE_NAME)" >> release_notes.md
+              fi
+            done
+            echo "" >> release_notes.md
+          done
+
+      - name: Update CHANGELOG.md (only on main push)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          CHANGELOG_FILE="CHANGELOG.md"
+          if [ ! -f "$CHANGELOG_FILE" ]; then
+            echo "# Changelog" > "$CHANGELOG_FILE"
+            echo "" >> "$CHANGELOG_FILE"
+          fi
+          # 删除旧的 Unreleased section
+          sed -i '/^## Unreleased/,/^## /{/^## Unreleased/!{/^## /!d}}' "$CHANGELOG_FILE"
+          # 插入最新 release_notes.md 内容
+          awk 'NR==1{print; print ""}' "$CHANGELOG_FILE" > tmp.md
+          cat release_notes.md >> tmp.md
+          tail -n +2 "$CHANGELOG_FILE" >> tmp.md
+          mv tmp.md "$CHANGELOG_FILE"
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$CHANGELOG_FILE"
+          git commit -m "Update Unreleased changelog [skip ci]" || echo "No changes to commit"
+          git push origin main || echo "Push failed, possibly no changes"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || env.RELEASE_VERSION }}
+          name: ${{ github.ref_type == 'tag' && format('Release {0}', github.ref_name) || env.RELEASE_VERSION }}
+          files: release/*
+          body_path: release_notes.md
+          draft: ${{ github.ref_type != 'tag' }}
+          prerelease: ${{ github.ref_type != 'tag' }}
+          overwrite_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
