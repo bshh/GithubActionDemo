@@ -18,6 +18,8 @@ jobs:
       matrix:
         goos: [linux, darwin, windows]
         goarch: [amd64, arm64]
+    outputs:
+      release_version: ${{ steps.vars.outputs.release_version }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -44,14 +46,13 @@ jobs:
             SHORT_SHA=$(git rev-parse --short HEAD)
             VERSION="Unreleased-${SHORT_SHA}"
           fi
-          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "release_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build binary
         run: |
           PLATFORM_DIR="dist/${{ matrix.goos }}/${{ matrix.goarch }}"
           mkdir -p "$PLATFORM_DIR"
-          BIN_NAME="app-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
+          BIN_NAME="app-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.vars.outputs.release_version }}"
           OUT_NAME="$BIN_NAME"
           if [ "${{ matrix.goos }}" = "windows" ]; then
             OUT_NAME="$BIN_NAME.exe"
@@ -61,7 +62,7 @@ jobs:
       - name: Package artifacts
         run: |
           PLATFORM_DIR="dist/${{ matrix.goos }}/${{ matrix.goarch }}"
-          ZIP_TAR_NAME="app-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
+          ZIP_TAR_NAME="app-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.vars.outputs.release_version }}"
           BIN_NAME="$ZIP_TAR_NAME"
           if [ "${{ matrix.goos }}" = "windows" ]; then
             BIN_NAME="$ZIP_TAR_NAME.exe"
@@ -87,8 +88,9 @@ jobs:
 
       - name: Collect all release files
         run: |
+          shopt -s globstar nullglob
           mkdir -p release
-          find dist -type f \( -name "*.zip" -o -name "*.tar.gz" \) -exec cp {} release/ \;
+          cp dist/**/*.zip dist/**/*.tar.gz release/ || true
 
       - name: Upload consolidated release artifact
         uses: actions/upload-artifact@v4
@@ -98,7 +100,7 @@ jobs:
 
   release:
     if: github.ref_type == 'tag' || github.ref == 'refs/heads/main'
-    needs: collect
+    needs: [collect, build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -115,7 +117,7 @@ jobs:
       - name: Delete old Unreleased draft (only on main push)
         if: github.ref == 'refs/heads/main'
         run: |
-          gh release list --json tagName,isDraft | jq -r '.[] | select(.isDraft==true and .tagName|test("^Unreleased-")) | .tagName' | while read -r tag; do
+          gh release list --json tagName,isDraft | jq -r '.[] | select(.isDraft==true and .tagName|test("^Unreleased")) | .tagName' | while read -r tag; do
             echo "Deleting old draft: $tag"
             gh release delete "$tag" --yes
           done
@@ -124,20 +126,10 @@ jobs:
 
       - name: Generate release notes (Conventional Commits)
         run: |
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            IS_RELEASE=true
-          else
-            IS_RELEASE=false
-          fi
-
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          if [ -n "$PREV_TAG" ]; then
-            RANGE="$PREV_TAG..HEAD"
-          else
-            RANGE="HEAD"
-          fi
+          RANGE="$PREV_TAG..HEAD"
 
-          echo "# Release ${{ env.RELEASE_VERSION }}" > release_notes.md
+          echo "# Release ${{ needs.build.outputs.release_version }}" > release_notes.md
           echo "" >> release_notes.md
 
           declare -A sections=(
@@ -174,7 +166,7 @@ jobs:
             for file in release/*; do
               if [[ "$file" == *"$os"* ]]; then
                 FILE_NAME=$(basename "$file")
-                echo "- [$FILE_NAME](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_VERSION }}/$FILE_NAME)" >> release_notes.md
+                echo "- [$FILE_NAME](https://github.com/${{ github.repository }}/releases/download/${{ needs.build.outputs.release_version }}/$FILE_NAME)" >> release_notes.md
               fi
             done
             echo "" >> release_notes.md
@@ -188,11 +180,14 @@ jobs:
             echo "# Changelog" > "$CHANGELOG_FILE"
             echo "" >> "$CHANGELOG_FILE"
           fi
-
-          # prepend release notes
-          { cat release_notes.md; echo ""; cat "$CHANGELOG_FILE"; } > tmp.md
+          # 删除旧的 Unreleased section
+          sed -i '/^## Unreleased/,/^## /{/^## Unreleased/!{/^## /!d}}' "$CHANGELOG_FILE"
+          # 插入最新 release_notes.md 内容
+          awk 'NR==1{print; print ""}' "$CHANGELOG_FILE" > tmp.md
+          cat release_notes.md >> tmp.md
+          tail -n +2 "$CHANGELOG_FILE" >> tmp.md
           mv tmp.md "$CHANGELOG_FILE"
-
+          
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add "$CHANGELOG_FILE"
@@ -202,8 +197,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || env.RELEASE_VERSION }}
-          name: ${{ github.ref_type == 'tag' && format('Release {0}', github.ref_name) || env.RELEASE_VERSION }}
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || needs.build.outputs.release_version }}
+          name: ${{ github.ref_type == 'tag' && format('Release {0}', github.ref_name) || format('Unreleased Build ({0})', needs.build.outputs.release_version) }}
           files: release/*
           body_path: release_notes.md
           draft: ${{ github.ref_type != 'tag' }}
