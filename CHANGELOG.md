@@ -1,5 +1,27 @@
 # Release 
 
+# Release Unreleased-2025-09-11-b2042a0
+
+## 📦 Downloads
+### Linux
+- [app-linux-amd64-Unreleased-2025-09-11-b2042a0.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-linux-amd64-Unreleased-2025-09-11-b2042a0.tar.gz)
+- [app-linux-amd64-Unreleased-2025-09-11-b2042a0.zip](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-linux-amd64-Unreleased-2025-09-11-b2042a0.zip)
+- [app-linux-arm64-Unreleased-2025-09-11-b2042a0.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-linux-arm64-Unreleased-2025-09-11-b2042a0.tar.gz)
+- [app-linux-arm64-Unreleased-2025-09-11-b2042a0.zip](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-linux-arm64-Unreleased-2025-09-11-b2042a0.zip)
+
+### Darwin
+- [app-darwin-amd64-Unreleased-2025-09-11-b2042a0.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-darwin-amd64-Unreleased-2025-09-11-b2042a0.tar.gz)
+- [app-darwin-amd64-Unreleased-2025-09-11-b2042a0.zip](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-darwin-amd64-Unreleased-2025-09-11-b2042a0.zip)
+- [app-darwin-arm64-Unreleased-2025-09-11-b2042a0.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-darwin-arm64-Unreleased-2025-09-11-b2042a0.tar.gz)
+- [app-darwin-arm64-Unreleased-2025-09-11-b2042a0.zip](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-darwin-arm64-Unreleased-2025-09-11-b2042a0.zip)
+
+### Windows
+- [app-windows-amd64-Unreleased-2025-09-11-b2042a0.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-windows-amd64-Unreleased-2025-09-11-b2042a0.tar.gz)
+- [app-windows-amd64-Unreleased-2025-09-11-b2042a0.zip](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-windows-amd64-Unreleased-2025-09-11-b2042a0.zip)
+- [app-windows-arm64-Unreleased-2025-09-11-b2042a0.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-windows-arm64-Unreleased-2025-09-11-b2042a0.tar.gz)
+- [app-windows-arm64-Unreleased-2025-09-11-b2042a0.zip](https://github.com/bshh/GithubActionDemo/releases/download/Unreleased/app-windows-arm64-Unreleased-2025-09-11-b2042a0.zip)
+
+
 # Release Unreleased-2025-09-11-7516bf6
 
 ## 📦 Downloads
