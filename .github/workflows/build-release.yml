@@ -168,7 +168,7 @@ jobs:
             for file in release/*; do
               if [[ "$file" == *"$os"* ]]; then
                 FILE_NAME=$(basename "$file")
-                echo "- [$FILE_NAME](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_type == 'tag' && github.ref_name || 'Unreleased' }}/$FILE_NAME)" >> release_notes.md
+                echo "- [$FILE_NAME](https://github.com/${{ github.repository }}/releases/download/Unreleased/$FILE_NAME)" >> release_notes.md
               fi
             done
             echo "" >> release_notes.md
@@ -182,14 +182,12 @@ jobs:
             echo "# Changelog" > "$CHANGELOG_FILE"
             echo "" >> "$CHANGELOG_FILE"
           fi
-          # 删除旧的 Unreleased section
           sed -i '/^## Unreleased/,/^## /{/^## Unreleased/!{/^## /!d}}' "$CHANGELOG_FILE"
-          # 插入最新 release_notes.md 内容
           awk 'NR==1{print; print ""}' "$CHANGELOG_FILE" > tmp.md
           cat release_notes.md >> tmp.md
           tail -n +2 "$CHANGELOG_FILE" >> tmp.md
           mv tmp.md "$CHANGELOG_FILE"
-          
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add "$CHANGELOG_FILE"
@@ -199,12 +197,12 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'Unreleased' }}
-          name: ${{ github.ref_type == 'tag' && format('Release {0}', github.ref_name) || format('Unreleased Build ({0})', needs.build.outputs.release_version) }}
+          tag_name: Unreleased
+          name: "Unreleased Build (${ {needs.build.outputs.release_version} })"
           files: release/*
           body_path: release_notes.md
-          draft: ${{ github.ref_type != 'tag' }}
-          prerelease: ${{ github.ref_type != 'tag' }}
+          draft: true
+          prerelease: true
           overwrite_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
