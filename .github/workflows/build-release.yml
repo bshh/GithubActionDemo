@@ -153,6 +153,8 @@ jobs:
             ["chore"]="## 🔧 Chores"
           )
 
+          git log $RANGE --pretty=format:"%s" > tempgitlog.txt
+          echo "" >> tempgitlog.txt
           declare -A logs
           while IFS= read -r line; do
             for key in "${!sections[@]}"; do
@@ -160,7 +162,7 @@ jobs:
                 logs[$key]+="- ${line#*: }"$'\n'
               fi
             done
-          done < <(git log $RANGE --pretty=format:"%s")
+          done < tempgitlog.txt
 
           for key in feat fix docs refactor perf test chore; do
             if [ -n "${logs[$key]}" ]; then
