@@ -50,8 +50,9 @@ jobs:
       - name: Build binary
         run: |
           PLATFORM_DIR="dist/${{ matrix.goos }}/${{ matrix.goarch }}"
+          appName=$(basename $(git rev-parse --show-toplevel))
           mkdir -p "$PLATFORM_DIR"
-          BIN_NAME="app-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
+          BIN_NAME="$appName-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
           OUT_NAME="$BIN_NAME"
           if [ "${{ matrix.goos }}" = "windows" ]; then
             OUT_NAME="$BIN_NAME.exe"
