@@ -50,19 +50,19 @@ jobs:
       - name: Build binary
         run: |
           PLATFORM_DIR="dist/${{ matrix.goos }}/${{ matrix.goarch }}"
-          appName=$(basename $(git rev-parse --show-toplevel))
+          APP_NAME=$(basename $(git rev-parse --show-toplevel))
           mkdir -p "$PLATFORM_DIR"
-          BIN_NAME="$appName-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
+          BIN_NAME="APP_NAME-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
           OUT_NAME="$BIN_NAME"
           if [ "${{ matrix.goos }}" = "windows" ]; then
             OUT_NAME="$BIN_NAME.exe"
           fi
           CGO_ENABLED=0 GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o "$PLATFORM_DIR/$OUT_NAME" main.go
-
+          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
       - name: Package artifacts
         run: |
           PLATFORM_DIR="dist/${{ matrix.goos }}/${{ matrix.goarch }}"
-          ZIP_TAR_NAME="app-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
+          ZIP_TAR_NAME="${{ env.APP_NAME }}-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
           BIN_NAME="$ZIP_TAR_NAME"
           if [ "${{ matrix.goos }}" = "windows" ]; then
             BIN_NAME="$ZIP_TAR_NAME.exe"
