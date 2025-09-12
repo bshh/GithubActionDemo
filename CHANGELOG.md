@@ -4,6 +4,33 @@
 
 ## ✨ Features
 
+- add shell for changelog
+
+
+## 📦 Downloads
+### Linux
+- [app-linux-amd64-Unreleased - 2c88401.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-linux-amd64-Unreleased - 2c88401.tar.gz)
+- [app-linux-amd64-Unreleased - 2c88401.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-linux-amd64-Unreleased - 2c88401.zip)
+- [app-linux-arm64-Unreleased - 2c88401.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-linux-arm64-Unreleased - 2c88401.tar.gz)
+- [app-linux-arm64-Unreleased - 2c88401.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-linux-arm64-Unreleased - 2c88401.zip)
+
+### Darwin
+- [app-darwin-amd64-Unreleased - 2c88401.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-darwin-amd64-Unreleased - 2c88401.tar.gz)
+- [app-darwin-amd64-Unreleased - 2c88401.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-darwin-amd64-Unreleased - 2c88401.zip)
+- [app-darwin-arm64-Unreleased - 2c88401.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-darwin-arm64-Unreleased - 2c88401.tar.gz)
+- [app-darwin-arm64-Unreleased - 2c88401.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-darwin-arm64-Unreleased - 2c88401.zip)
+
+### Windows
+- [app-windows-amd64-Unreleased - 2c88401.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-windows-amd64-Unreleased - 2c88401.tar.gz)
+- [app-windows-amd64-Unreleased - 2c88401.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-windows-amd64-Unreleased - 2c88401.zip)
+- [app-windows-arm64-Unreleased - 2c88401.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-windows-arm64-Unreleased - 2c88401.tar.gz)
+- [app-windows-arm64-Unreleased - 2c88401.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/app-windows-arm64-Unreleased - 2c88401.zip)
+
+
+# Release refs/heads/main
+
+## ✨ Features
+
 - update main
 
 
