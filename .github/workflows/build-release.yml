@@ -52,7 +52,7 @@ jobs:
           PLATFORM_DIR="dist/${{ matrix.goos }}/${{ matrix.goarch }}"
           APP_NAME=$(basename $(git rev-parse --show-toplevel))
           mkdir -p "$PLATFORM_DIR"
-          BIN_NAME="APP_NAME-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
+          BIN_NAME="$APP_NAME-${{ matrix.goos }}-${{ matrix.goarch }}-${{ env.RELEASE_VERSION }}"
           OUT_NAME="$BIN_NAME"
           if [ "${{ matrix.goos }}" = "windows" ]; then
             OUT_NAME="$BIN_NAME.exe"
