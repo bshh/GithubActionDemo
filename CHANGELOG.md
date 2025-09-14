@@ -2,6 +2,28 @@
 
 # Release refs/heads/main
 
+## 📦 Downloads
+### Linux
+- [GithubActionDemo-linux-amd64-Unreleased - 5f02efa.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - 5f02efa.tar.gz)
+- [GithubActionDemo-linux-amd64-Unreleased - 5f02efa.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - 5f02efa.zip)
+- [GithubActionDemo-linux-arm64-Unreleased - 5f02efa.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-arm64-Unreleased - 5f02efa.tar.gz)
+- [GithubActionDemo-linux-arm64-Unreleased - 5f02efa.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-arm64-Unreleased - 5f02efa.zip)
+
+### Darwin
+- [GithubActionDemo-darwin-amd64-Unreleased - 5f02efa.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-amd64-Unreleased - 5f02efa.tar.gz)
+- [GithubActionDemo-darwin-amd64-Unreleased - 5f02efa.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-amd64-Unreleased - 5f02efa.zip)
+- [GithubActionDemo-darwin-arm64-Unreleased - 5f02efa.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-arm64-Unreleased - 5f02efa.tar.gz)
+- [GithubActionDemo-darwin-arm64-Unreleased - 5f02efa.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-arm64-Unreleased - 5f02efa.zip)
+
+### Windows
+- [GithubActionDemo-windows-amd64-Unreleased - 5f02efa.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-amd64-Unreleased - 5f02efa.tar.gz)
+- [GithubActionDemo-windows-amd64-Unreleased - 5f02efa.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-amd64-Unreleased - 5f02efa.zip)
+- [GithubActionDemo-windows-arm64-Unreleased - 5f02efa.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-arm64-Unreleased - 5f02efa.tar.gz)
+- [GithubActionDemo-windows-arm64-Unreleased - 5f02efa.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-arm64-Unreleased - 5f02efa.zip)
+
+
+# Release refs/heads/main
+
 ## 🐛 Bug Fixes
 
 - app name
