@@ -17,7 +17,7 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4 #检出代码仓库。
       - name: run your customized script # 自定义脚本
-        run: chmod +x ./gh-pages_script.sh && ./gh-pages_script.sh
+        run: mkdir -p dest && chmod +x ./gh-pages_script.sh && ./gh-pages_script.sh
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4 #使用第三方 Action 将构建后的文件部署到 GitHub Pages。
         with:
