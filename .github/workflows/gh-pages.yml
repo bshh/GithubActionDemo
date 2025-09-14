@@ -1,0 +1,24 @@
+# 请对一下github action flow 配置做一些解释
+on:
+  push: # 当用户push代码到代码仓库main分支时触发github action
+    branches:
+      - main
+  schedule: # 定时触发github action
+    - cron: "0 0 */1 * *" # 这里设置的每天触发一次，具体配置可以自行了解Cron表达式知识
+  workflow_dispatch: # GitHub Actions 中的一种触发器，用于手动触发工作流（Workflow）。它允许用户通过 GitHub 界面或 API 手动启动一个工作流，而不是依赖于事件
+permissions:
+  contents: write # 一种最简单的授予github action 写权限的方式
+
+name: Build and Deploy
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 指定运行任务的环境，这里是 ubuntu-latest。
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4 #检出代码仓库。
+      - name: run your customized script # 自定义脚本
+        run: your_script.sh
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4 #使用第三方 Action 将构建后的文件部署到 GitHub Pages。
+        with:
+          folder: "dest"
