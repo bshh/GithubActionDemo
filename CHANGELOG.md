@@ -4,6 +4,28 @@
 
 ## 📦 Downloads
 ### Linux
+- [GithubActionDemo-linux-amd64-Unreleased - e725b9c.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - e725b9c.tar.gz)
+- [GithubActionDemo-linux-amd64-Unreleased - e725b9c.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - e725b9c.zip)
+- [GithubActionDemo-linux-arm64-Unreleased - e725b9c.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-arm64-Unreleased - e725b9c.tar.gz)
+- [GithubActionDemo-linux-arm64-Unreleased - e725b9c.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-arm64-Unreleased - e725b9c.zip)
+
+### Darwin
+- [GithubActionDemo-darwin-amd64-Unreleased - e725b9c.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-amd64-Unreleased - e725b9c.tar.gz)
+- [GithubActionDemo-darwin-amd64-Unreleased - e725b9c.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-amd64-Unreleased - e725b9c.zip)
+- [GithubActionDemo-darwin-arm64-Unreleased - e725b9c.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-arm64-Unreleased - e725b9c.tar.gz)
+- [GithubActionDemo-darwin-arm64-Unreleased - e725b9c.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-arm64-Unreleased - e725b9c.zip)
+
+### Windows
+- [GithubActionDemo-windows-amd64-Unreleased - e725b9c.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-amd64-Unreleased - e725b9c.tar.gz)
+- [GithubActionDemo-windows-amd64-Unreleased - e725b9c.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-amd64-Unreleased - e725b9c.zip)
+- [GithubActionDemo-windows-arm64-Unreleased - e725b9c.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-arm64-Unreleased - e725b9c.tar.gz)
+- [GithubActionDemo-windows-arm64-Unreleased - e725b9c.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-arm64-Unreleased - e725b9c.zip)
+
+
+# Release refs/heads/main
+
+## 📦 Downloads
+### Linux
 - [GithubActionDemo-linux-amd64-Unreleased - e9d7317.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - e9d7317.tar.gz)
 - [GithubActionDemo-linux-amd64-Unreleased - e9d7317.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - e9d7317.zip)
 - [GithubActionDemo-linux-arm64-Unreleased - e9d7317.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-arm64-Unreleased - e9d7317.tar.gz)
