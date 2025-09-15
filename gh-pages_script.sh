@@ -3,7 +3,7 @@
 # 创建一个最简单的html页面里面包含当天的日期
 
 # 获取当天日期
-current_date=$(date +"%Y-%m-%d %H:%M:%S")
+current_date=$(TZ=UTC-8  date +"%Y-%m-%d %H:%M:%S")
 
 # 创建HTML文件
 cat <<EOF > dest/index.html
