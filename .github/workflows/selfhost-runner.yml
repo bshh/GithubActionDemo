@@ -1,0 +1,27 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+
+    - name: Build
+      run: |
+        APP_NAME=$(basename $(git rev-parse --show-toplevel))
+        echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
+         CGO_ENABLED=0 go build -o "bin/$APP_NAME" main.go
+      
+    - name: Run a multi-line script
+      run: |
+        bin/$APP_NAME 
