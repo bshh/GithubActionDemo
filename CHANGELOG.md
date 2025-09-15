@@ -4,6 +4,28 @@
 
 ## 📦 Downloads
 ### Linux
+- [GithubActionDemo-linux-amd64-Unreleased - d906631.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - d906631.tar.gz)
+- [GithubActionDemo-linux-amd64-Unreleased - d906631.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - d906631.zip)
+- [GithubActionDemo-linux-arm64-Unreleased - d906631.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-arm64-Unreleased - d906631.tar.gz)
+- [GithubActionDemo-linux-arm64-Unreleased - d906631.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-arm64-Unreleased - d906631.zip)
+
+### Darwin
+- [GithubActionDemo-darwin-amd64-Unreleased - d906631.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-amd64-Unreleased - d906631.tar.gz)
+- [GithubActionDemo-darwin-amd64-Unreleased - d906631.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-amd64-Unreleased - d906631.zip)
+- [GithubActionDemo-darwin-arm64-Unreleased - d906631.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-arm64-Unreleased - d906631.tar.gz)
+- [GithubActionDemo-darwin-arm64-Unreleased - d906631.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-darwin-arm64-Unreleased - d906631.zip)
+
+### Windows
+- [GithubActionDemo-windows-amd64-Unreleased - d906631.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-amd64-Unreleased - d906631.tar.gz)
+- [GithubActionDemo-windows-amd64-Unreleased - d906631.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-amd64-Unreleased - d906631.zip)
+- [GithubActionDemo-windows-arm64-Unreleased - d906631.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-arm64-Unreleased - d906631.tar.gz)
+- [GithubActionDemo-windows-arm64-Unreleased - d906631.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-windows-arm64-Unreleased - d906631.zip)
+
+
+# Release refs/heads/main
+
+## 📦 Downloads
+### Linux
 - [GithubActionDemo-linux-amd64-Unreleased - 13ba948.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - 13ba948.tar.gz)
 - [GithubActionDemo-linux-amd64-Unreleased - 13ba948.zip](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-amd64-Unreleased - 13ba948.zip)
 - [GithubActionDemo-linux-arm64-Unreleased - 13ba948.tar.gz](https://github.com/bshh/GithubActionDemo/releases/download/refs/heads/main/GithubActionDemo-linux-arm64-Unreleased - 13ba948.tar.gz)
